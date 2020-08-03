@@ -20,7 +20,7 @@
  * 然后通过 ctx 属性获取当前上下文，ctx.$router 是路由实例或者ctx.$store获取全局变量
  * 而 ctx.$router.currentRoute 就包含当前路由信息。
 */
-import { ref, computed, watch, getCurrentInstance } from 'vue';
+import { ref, computed, watch, getCurrentInstance, onMounted } from 'vue';
     export default {
         data() {
 			return {
@@ -36,7 +36,8 @@ import { ref, computed, watch, getCurrentInstance } from 'vue';
             /**
              * 获取路由或全局变量
             */
-            const  ctx  = getCurrentInstance().ctx
+            const  ctx  = getCurrentInstance().ctx;
+            console.log(ctx)
             /**
              * 方法
             */
@@ -57,12 +58,21 @@ import { ref, computed, watch, getCurrentInstance } from 'vue';
             watch(() => count.value, val => {
                 console.log(`count is ${val}`)
                 console.log('count is '+val)
-                console.log(ctx.$router.currentRoute.value)//获取路由
             })
             /**
              * 计算属性
             */
-            const doubleCount = computed(() => count.value * 2)
+            const doubleCount = computed(() => count.value * 2);
+            /**
+             * onMounted 最后执行
+            */
+            onMounted(() => {
+                /**
+                 * 获取路由
+                */
+                let currentRoute = ctx.$router.currentRoute.value
+                console.log('我是地址栏id：'+currentRoute.query.id);//获取地址栏id
+            })
             /**
              * 返回
             */
